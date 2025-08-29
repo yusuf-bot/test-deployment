@@ -1,20 +1,28 @@
-version: "3.8"
+version: "3.9"
 
 services:
-  backend:
-    build: ./backend
-    container_name: chatbot_backend
-    restart: always
-
   frontend:
     build: ./frontend
     container_name: chatbot_frontend
+    ports:
+      - "8080:8080"   # host 8080 -> container 8080
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: chatbot_backend
+    ports:
+      - "5000:5000"
     restart: always
 
   nginx:
-    build: ./nginx
+    image: nginx:latest
+    container_name: chatbot_nginx
     ports:
-      - "80:80"
+      - "80:80"        # host port 80 exposed
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - backend
       - frontend
+      - backend
+    restart: always

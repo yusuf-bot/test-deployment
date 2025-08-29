@@ -20,7 +20,7 @@ def chat():
     except Exception:
         reply = "Sorry, I couldn’t process that."
 
-    return jsonify({"reply": reply})
+    return jsonify({"reply": respons`e})
 
 
 if __name__ == "__main__":
