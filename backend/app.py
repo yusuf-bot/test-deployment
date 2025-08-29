@@ -16,8 +16,7 @@ def chat():
 
     # Extract assistant reply
     try:
-        reply = response["outputs"][0]["content"]
-
+        reply = response.outputs[0].content[0]
     except Exception:
         reply = "Sorry, I couldn’t process that."
 
