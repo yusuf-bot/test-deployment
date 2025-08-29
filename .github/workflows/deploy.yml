@@ -1,11 +1,28 @@
-- name: Deploy to server
-  uses: appleboy/ssh-action@v1.0.3
-  with:
-    host: ${{ secrets.OCI_SERVER_IP }}
-    username: ubuntu
-    password: ${{ secrets.SSH_PASSWORD }}
-    script: |
-      cd ~/test-deployment
-      git pull origin main
-      docker-compose down
-      docker-compose up -d --build
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main  # deploy on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.OCI_SERVER_IP }}
+          username: ubuntu
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          debug: true
+          script: |
+            cd ~/test-deployment
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
