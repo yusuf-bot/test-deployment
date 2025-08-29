@@ -1,26 +1,11 @@
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches: [ "main" ]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.OCI_SERVER_IP }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd ~/test-deployment
-            git pull origin main
-            docker-compose down
-            docker-compose up -d --build
-            echo "Deployment completed"
+- name: Deploy to server
+  uses: appleboy/ssh-action@v1.0.3
+  with:
+    host: ${{ secrets.OCI_SERVER_IP }}
+    username: ubuntu
+    password: ${{ secrets.SSH_PASSWORD }}
+    script: |
+      cd ~/test-deployment
+      git pull origin main
+      docker-compose down
+      docker-compose up -d --build
