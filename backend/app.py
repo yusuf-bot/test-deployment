@@ -16,11 +16,11 @@ def chat():
 
     # Extract assistant reply
     try:
-        reply = response.outputs[0].content[0].text
+        reply = response.outputs[0].content
     except Exception:
         reply = "Sorry, I couldn’t process that."
 
-    return jsonify({"reply": respons`e})
+    return jsonify({"reply": reply})
 
 
 if __name__ == "__main__":
